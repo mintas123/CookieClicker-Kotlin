@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/cookieClick"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/cookie" />
+
+    <TextView
+        android:id="@+id/cookieCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="Cookies:"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/cookieClick"
+        app:layout_constraintEnd_toEndOf="@+id/cookieClick"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/cookieClick" />
+
+    <Button
+        android:id="@+id/shopBtn"
+        android:layout_width="297dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_rounded"
+        android:fontFamily="sans-serif-black"
+        android:shadowColor="#494949"
+        android:text="SHOP"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cookieClick"
+        app:layout_constraintTop_toBottomOf="@+id/cookieClick"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="Cookie Clicker"
+        android:textColor="#000000"
+        android:textSize="42sp"
+        app:layout_constraintBottom_toTopOf="@+id/cookieClick"
+        app:layout_constraintEnd_toEndOf="@+id/cookieClick"
+        app:layout_constraintStart_toStartOf="@+id/cookieClick" />
+
+    <TextView
+        android:id="@+id/timeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time: "
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
