@@ -22,18 +22,19 @@
         android:id="@+id/cookieCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="48dp"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Cookies:"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/cookieClick"
         app:layout_constraintEnd_toEndOf="@+id/cookieClick"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/cookieClick" />
+        app:layout_constraintStart_toStartOf="@+id/cookieClick"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintVertical_bias="0.405" />
 
     <Button
         android:id="@+id/shopBtn"
-        android:layout_width="297dp"
+        android:layout_width="300dp"
         android:layout_height="60dp"
         android:background="@drawable/btn_rounded"
         android:fontFamily="sans-serif-black"
@@ -45,8 +46,22 @@
         app:layout_constraintTop_toBottomOf="@+id/cookieClick"
         app:layout_constraintVertical_bias="0.25" />
 
+    <Button
+        android:id="@+id/scoreBoard"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Scoreboard"
+        android:background="@drawable/btn_rounded"
+        android:fontFamily="sans-serif-black"
+        android:shadowColor="#494949"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shopBtn" />
+
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleCookie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="120dp"
@@ -65,5 +80,40 @@
         android:text="Time: "
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/tempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tempo:"
+        app:layout_constraintBottom_toTopOf="@+id/cookieClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cookieCounter" />
+
+    <Button
+        android:id="@+id/grannyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add granny"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.185" />
+
+    <ImageView
+        android:id="@+id/randomMonster"
+        android:layout_width="144dp"
+        android:layout_height="156dp"
+        android:src="@drawable/monster"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/cookieClick"
+        app:layout_constraintEnd_toEndOf="@+id/cookieClick"
+        app:layout_constraintStart_toStartOf="@+id/cookieClick"
+        app:layout_constraintTop_toTopOf="@+id/cookieClick" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

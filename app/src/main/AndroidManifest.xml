@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".EntryActivity">
+        <activity android:name=".ScoreboardActivity" android:screenOrientation="userPortrait" />
+        <activity android:name=".FinishActivity" android:screenOrientation="userPortrait" />
+        <activity android:name=".EntryActivity" android:screenOrientation="userPortrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +20,10 @@
         </activity>
         <activity
             android:name=".ShopActivity"
-        />
+            android:screenOrientation="userPortrait"/>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="userPortrait">
-
-        </activity>
+            android:screenOrientation="userPortrait" />
     </application>
 
 </manifest>
