@@ -3,10 +3,11 @@ package pl.pjatk.s16604.proj1
 import pl.pjatk.s16604.proj1.models.*
 import java.time.LocalDateTime
 import java.time.Month
+import java.time.format.DateTimeFormatter
 
 
 const val COOKIES = "COOKIES"
-const val PREFS_FILENAME = "TEST_PRODU"
+const val PREFS_FILENAME = "PROD"
 const val TIMER = "TIMER"
 const val UPGRADES = "UPGRADES"
 const val TEMPO = "TEMPO"
@@ -48,18 +49,27 @@ fun initHighscores(): MutableList<Result> {
         Result(
             2000,
             "Ania",
-            LocalDateTime.of(
-                2020, Month.APRIL, 29, 13, 37
-            ).toString()
+            dateFormatter(
+                LocalDateTime.of(
+                    2020, Month.APRIL, 29, 13, 37
+                )
+            )
         ),
         Result(
             1000,
             "Kuba",
-            LocalDateTime.of(
-                2020, Month.APRIL, 27, 13, 37
-            ).toString()
+            dateFormatter(
+                LocalDateTime.of(
+                    2020, Month.APRIL, 27, 13, 37
+                )
+            )
         )
     )
+}
+
+fun dateFormatter(date: LocalDateTime): String {
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    return formatter.format(date)
 }
 
 fun countFormatter(number: Double): String {

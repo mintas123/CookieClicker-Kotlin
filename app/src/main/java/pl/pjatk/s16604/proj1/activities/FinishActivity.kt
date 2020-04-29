@@ -2,15 +2,14 @@ package pl.pjatk.s16604.proj1.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_finish.*
 import pl.pjatk.s16604.proj1.*
-import pl.pjatk.s16604.proj1.R
-import pl.pjatk.s16604.proj1.initHighscores
-import pl.pjatk.s16604.proj1.initUpgrades
 import pl.pjatk.s16604.proj1.models.Result
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 
 class FinishActivity : AppCompatActivity() {
 
@@ -51,7 +50,7 @@ class FinishActivity : AppCompatActivity() {
 
     private fun createResult(): Result {
         val name = editText.text.toString()
-        val date = LocalDateTime.now().toString()
+        val date = LocalDateTime.now()
 
         var sum = 0L
         upgrades.forEach {
@@ -60,7 +59,7 @@ class FinishActivity : AppCompatActivity() {
 
         val score = sum + cookies
 
-        return Result(score, name, date)
+        return Result(score, name, dateFormatter(date))
 
     }
 
