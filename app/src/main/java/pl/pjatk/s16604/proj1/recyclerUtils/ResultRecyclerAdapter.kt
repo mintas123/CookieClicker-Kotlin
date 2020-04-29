@@ -1,4 +1,4 @@
-package pl.pjatk.s16604.proj1.recyclerAdapters
+package pl.pjatk.s16604.proj1.recyclerUtils
 
 
 import android.view.LayoutInflater
@@ -52,7 +52,7 @@ class ResultRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(result: Result) {
             resultName.text = result.name
             resultScore.text = result.score.toString()
-            resultDate.text = result.date.toString()
+            resultDate.text = result.date
         }
 
     }

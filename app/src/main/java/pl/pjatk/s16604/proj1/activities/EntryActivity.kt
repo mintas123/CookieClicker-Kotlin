@@ -22,7 +22,6 @@ class EntryActivity : AppCompatActivity() {
 
     private fun onExitClick(){
         exitBtn.setOnClickListener {
-            moveTaskToBack(true);
             exitProcess(-1)
         }
 

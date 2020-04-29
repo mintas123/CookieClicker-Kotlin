@@ -1,29 +1,20 @@
 package pl.pjatk.s16604.proj1.activities
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_finish.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_shop.*
 import pl.pjatk.s16604.proj1.*
 import pl.pjatk.s16604.proj1.R
 import pl.pjatk.s16604.proj1.initHighscores
 import pl.pjatk.s16604.proj1.initUpgrades
 import pl.pjatk.s16604.proj1.models.Result
-import pl.pjatk.s16604.proj1.models.Upgrade
-import java.lang.reflect.Type
 import java.time.LocalDateTime
 
 class FinishActivity : AppCompatActivity() {
 
-    private var sharedPreferences: SharedPreferences? = null
-
-
+    private lateinit var sharedPreferences: SharedPreferences
     //initial default values in case of lack of SP
     private var cookies = 0L
     private var upgrades = initUpgrades()
@@ -53,7 +44,7 @@ class FinishActivity : AppCompatActivity() {
 
 
             animate(this, saveBtn)
-            saveData()
+            saveData(highscores)
             goToScore()
         }
     }
@@ -79,45 +70,18 @@ class FinishActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    private fun saveData() {
-        val editor = sharedPreferences!!.edit()
-
-        //reset game data
-        val gson = Gson()
-        var jsonUpgrades = gson.toJson(initUpgrades())
-        editor.putLong(COOKIES, 0L)
-        editor.putString(UPGRADES, jsonUpgrades)
-        editor.putLong(TEMPO, 0L)
-        editor.putLong(TIMER, MAX_TIME)
-
-        //save highscore
-        var jsonResults = gson.toJson(highscores)
-        editor.putString(HIGHSCORE, jsonResults)
-
-        editor.apply()
+    private fun saveData(hs: MutableList<Result>) {
+        STORAGE.resetData(hs)
     }
 
     private fun loadData() {
-        sharedPreferences = this.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
-        cookies = sharedPreferences!!.getLong(COOKIES, 0L)
-        val gson = Gson()
+        val metadata = STORAGE.loadData(this)
 
-        var jsonUpgrades = sharedPreferences!!.getString(UPGRADES, gson.toJson(initUpgrades()))
-        val upgradeListType: Type = object : TypeToken<ArrayList<Upgrade?>?>() {}.type
-        upgrades = gson.fromJson(jsonUpgrades, upgradeListType)
-
-        var jsonHighScores = sharedPreferences!!.getString(HIGHSCORE, gson.toJson(initHighscores()))
-
-        highscores =
-            if (jsonHighScores.equals("") || jsonHighScores.equals("null")) {
-                initHighscores()
-            } else {
-                val resultListType: Type = object : TypeToken<ArrayList<Result?>?>() {}.type
-                gson.fromJson(jsonHighScores, resultListType)
-            }
-
+        sharedPreferences = metadata.sharedPreferences
+        cookies = metadata.cookies
+        upgrades = metadata.upgrades
+        highscores = STORAGE.loadHighScore(this)
 
     }
 }
