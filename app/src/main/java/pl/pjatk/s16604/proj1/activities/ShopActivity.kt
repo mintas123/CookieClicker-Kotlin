@@ -1,7 +1,6 @@
-package pl.pjatk.s16604.proj1
+package pl.pjatk.s16604.proj1.activities
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_shop.*
+import pl.pjatk.s16604.proj1.*
+import pl.pjatk.s16604.proj1.models.Upgrade
+import pl.pjatk.s16604.proj1.recyclerAdapters.UpgradeRecyclerAdapter
 import java.lang.reflect.Type
 
 class ShopActivity : AppCompatActivity() {
@@ -29,13 +31,18 @@ class ShopActivity : AppCompatActivity() {
         initRecyclerView()
         loadData()
 
+        onAddClick()
         onHomeClick()
 
     }
 
+
     private fun initRecyclerView(){
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@ShopActivity)
+            val topSpacingDecorator =
+                TopSpacingItemDecoration(30)
+            addItemDecoration(topSpacingDecorator)
             upgradeAdapter = UpgradeRecyclerAdapter()
             adapter = upgradeAdapter
         }
@@ -51,12 +58,27 @@ class ShopActivity : AppCompatActivity() {
         super.onStop()
     }
 
+//    private fun onAddClick(){
+//
+//        upgradeAdapter.setOnItemClickListener {
+//            if (cookies > it.cost.toInt()) {
+//                it.addUpgrade()
+//                cookies -= it.cost.toInt()
+//                perSecond += it.income
+//                animate(this,)
+//                tempo.text = "Tempo: $perSecond  C/s"
+//                grannyBtn.text = "+ (${upgrade.amount})"
+//            }
+//            upgrades[1] = upgrade
+//            saveData()
+//        }
+//    }
+
 
     private fun onHomeClick(){
         startBtn.setOnClickListener{
             animate(this, startBtn)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 

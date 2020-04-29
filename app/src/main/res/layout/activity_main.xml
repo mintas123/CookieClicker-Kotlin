@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <ImageView
         android:id="@+id/cookieClick"
@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/cookieClick"
         app:layout_constraintEnd_toEndOf="@+id/cookieClick"
         app:layout_constraintStart_toStartOf="@+id/cookieClick"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/titleCookie"
         app:layout_constraintVertical_bias="0.405" />
 
     <Button
@@ -50,15 +50,17 @@
         android:id="@+id/scoreBoard"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:text="Scoreboard"
         android:background="@drawable/btn_rounded"
         android:fontFamily="sans-serif-black"
         android:shadowColor="#494949"
+        android:text="Scoreboard"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shopBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/shopBtn"
+        app:layout_constraintVertical_bias="0.228" />
 
     <TextView
         android:id="@+id/titleCookie"
@@ -78,8 +80,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time: "
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintBottom_toTopOf="@+id/titleCookie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222" />
 
     <TextView
         android:id="@+id/tempo"
@@ -93,15 +99,15 @@
 
     <Button
         android:id="@+id/grannyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add granny"
+        android:layout_width="73dp"
+        android:layout_height="38dp"
+        android:text="finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintVertical_bias="0.241" />
 
     <ImageView
         android:id="@+id/randomMonster"

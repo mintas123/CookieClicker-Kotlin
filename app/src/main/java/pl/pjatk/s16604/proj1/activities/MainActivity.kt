@@ -1,4 +1,4 @@
-package pl.pjatk.s16604.proj1
+package pl.pjatk.s16604.proj1.activities
 
 import android.content.Context
 import android.content.Intent
@@ -10,16 +10,11 @@ import android.view.View
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
+import pl.pjatk.s16604.proj1.*
+import pl.pjatk.s16604.proj1.models.Upgrade
 import java.lang.reflect.Type
 import kotlin.random.Random
 
-
-const val COOKIES = "COOKIES"
-const val PREFS_FILENAME = "TEST"
-const val TIMER = "TIMER"
-const val UPGRADES = "UPGRADES"
-const val TEMPO = "TEMPO"
-const val MAX_TIME = 1000 * 60 * 60 * 12L
 
 
 class MainActivity : AppCompatActivity() {
@@ -93,21 +88,18 @@ class MainActivity : AppCompatActivity() {
     private fun onUpgradeClick() {
         var upgrade = upgrades[1]
         grannyBtn.setOnClickListener {
-            if (cookies > upgrade.cost.toInt()) {
-                upgrade.addUpgrade()
-                cookies -= upgrade.cost.toInt()
-                perSecond += upgrade.income
-                tempo.text = "Tempo: $perSecond  C/s"
-                grannyBtn.text = "+ (${upgrade.amount})"
-            }
-            upgrades[1] = upgrade
-            saveData()
+//            if (cookies > upgrade.cost.toInt()) {
+//                upgrade.addUpgrade()
+//                cookies -= upgrade.cost.toInt()
+//                perSecond += upgrade.income
+//                tempo.text = "Tempo: $perSecond  C/s"
+//                grannyBtn.text = "+ (${upgrade.amount})"
+//            }
+//            upgrades[1] = upgrade
+//            saveData()
+            val intent = Intent(this, FinishActivity::class.java)
+            startActivity(intent)
         }
-    }
-
-    private fun goToFinish() {
-        val intent = Intent(this, FinishActivity::class.java)
-        startActivity(intent)
     }
 
 
@@ -123,11 +115,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 var seconds = millisUntilFinished / 1000
-                timeLeft.text = "Time: ${timeFormatter(seconds)}"
+                timeLeft.text = "Time: ${timeFormatter(
+                    seconds
+                )}"
                 timer = millisUntilFinished
 
                 val chance = Random.nextInt(0, 10000)
-                if (chance < 10) {
+                if (chance < 50) {
                     showMonster()
                 }
             }
@@ -140,11 +134,16 @@ class MainActivity : AppCompatActivity() {
         countdownTimer.start()
     }
 
+    private fun goToFinish() {
+        val intent = Intent(this, FinishActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun calcIncome(): Long {
         var sum = 0L
         upgrades.forEach {
             if (it.amount > 0) {
-                sum += it.income * it.amount
+                sum += it.calcIncome()
             }
         }
         return sum
@@ -164,27 +163,32 @@ class MainActivity : AppCompatActivity() {
     private fun loadData() {
         sharedPreferences = this.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         cookies = sharedPreferences!!.getLong(COOKIES, 0L)
-        timer = sharedPreferences!!.getLong(TIMER, MAX_TIME)
+        timer = sharedPreferences!!.getLong(
+            TIMER,
+            MAX_TIME
+        )
         perSecond = sharedPreferences!!.getLong(TEMPO, 0L)
 
 
         val gson = Gson()
-        var jsonUpgrades = sharedPreferences!!.getString(UPGRADES, gson.toJson(initUpgrades()))
+        var jsonUpgrades = sharedPreferences!!.getString(
+            UPGRADES, gson.toJson(
+                initUpgrades()
+            ))
         val upgradeListType: Type = object : TypeToken<ArrayList<Upgrade?>?>() {}.type
         upgrades = gson.fromJson(jsonUpgrades, upgradeListType)
 
         //set loaded data
-        tempo.text = "Tempo: ${calcIncome()}  C/s"
+        tempo.text = "Tempo: ${calcIncome()} C/s"
         cookieCounter.text = "Cookies: $cookies"
-        timeLeft.text = "Time: $timer}"
-        tempo.text = "Tempo: $perSecond"
+        timeLeft.text = "Time: ${timeFormatter(timer/1000)}"
     }
 
     private fun showMonster() {
         val punishment = Random.nextDouble(0.1 * cookies, 0.5 * cookies)
 
 
-        val countdownTimer = object : CountDownTimer(3000L, 1000L) {
+        val countdownTimer = object : CountDownTimer(2000L, 1000L) {
             override fun onFinish() {
                 randomMonster.visibility = View.GONE
                 cookieClick.bringToFront()
@@ -205,8 +209,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 cookies = 0L
             }
-            randomMonster.visibility = View.GONE
-            cookieClick.bringToFront()
 
         }
         saveData()

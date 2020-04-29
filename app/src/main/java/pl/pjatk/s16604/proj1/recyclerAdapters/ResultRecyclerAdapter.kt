@@ -1,4 +1,4 @@
-package pl.pjatk.s16604.proj1
+package pl.pjatk.s16604.proj1.recyclerAdapters
 
 
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_result_list_item.view.*
+import pl.pjatk.s16604.proj1.R
+import pl.pjatk.s16604.proj1.models.Result
 
 class ResultRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -15,7 +17,7 @@ class ResultRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         return ResultHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.layout_upgrade_list_item,
+                R.layout.layout_result_list_item,
                 parent,
                 false
             )

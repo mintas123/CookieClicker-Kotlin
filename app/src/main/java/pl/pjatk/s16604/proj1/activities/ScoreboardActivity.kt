@@ -1,7 +1,6 @@
-package pl.pjatk.s16604.proj1
+package pl.pjatk.s16604.proj1.activities
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +9,17 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_scoreboard.*
 import kotlinx.android.synthetic.main.activity_shop.startBtn
+import pl.pjatk.s16604.proj1.*
+import pl.pjatk.s16604.proj1.models.Result
+import pl.pjatk.s16604.proj1.models.Upgrade
+import pl.pjatk.s16604.proj1.recyclerAdapters.ResultRecyclerAdapter
 import java.lang.reflect.Type
 import java.time.LocalDateTime
 import java.time.Month
+import java.util.*
+import java.util.stream.Collector
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 class ScoreboardActivity : AppCompatActivity() {
 
@@ -20,31 +27,26 @@ class ScoreboardActivity : AppCompatActivity() {
     private var sharedPreferences: SharedPreferences? = null
     private lateinit var resultAdapter: ResultRecyclerAdapter
 
-    val HIGHSCORE = "HIGHSCORE"
-    private var highscores = mutableListOf(
-        Result(
-            500,
-            "Kuba",
-            LocalDateTime.of(
-                2020, Month.APRIL, 27, 13, 37
-            )
-        )
-    )
+    private var highscores = initHighscores()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scoreboard)
         initRecyclerView()
-        saveData()
         loadData()
+
         onHomeClick()
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         recycler.apply {
             layoutManager = LinearLayoutManager(this@ScoreboardActivity)
-            resultAdapter = ResultRecyclerAdapter()
+            val topSpacingDecorator =
+                TopSpacingItemDecoration(10)
+            addItemDecoration(topSpacingDecorator)
+            resultAdapter =
+                ResultRecyclerAdapter()
             adapter = resultAdapter
         }
     }
@@ -52,28 +54,27 @@ class ScoreboardActivity : AppCompatActivity() {
     private fun onHomeClick() {
         startBtn.setOnClickListener {
             animate(this, startBtn)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
-    }
-
-    private fun saveData() {
-        val editor = sharedPreferences!!.edit()
-        val gson = Gson()
-        var jsonHighScores = gson.toJson(highscores)
-        editor.putString(HIGHSCORE, jsonHighScores)
-        editor.apply()
     }
 
     private fun loadData() {
         sharedPreferences = this.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
         val gson = Gson()
-        var jsonHighScores = sharedPreferences!!.getString(UPGRADES, "")
-        val resultListType: Type = object : TypeToken<ArrayList<Result?>?>() {}.type
-        highscores = gson.fromJson(jsonHighScores, resultListType)
+        var jsonHighScores = sharedPreferences!!.getString(HIGHSCORE, "")
+        if (jsonHighScores.equals("") || jsonHighScores.equals("null")) {
+            resultAdapter.submitList(highscores)
+        } else {
+            val resultListType: Type = object : TypeToken<ArrayList<Result?>?>() {}.type
+            highscores = gson.fromJson(jsonHighScores, resultListType)
+            highscores.sortByDescending {
+                it.score
+            }
+            val topTen = highscores.stream().limit(TOP_LIMIT).collect(Collectors.toList())
+            resultAdapter.submitList(topTen)
+        }
 
-        resultAdapter.submitList(highscores)
     }
 
 
