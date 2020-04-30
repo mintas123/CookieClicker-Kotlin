@@ -9,8 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_upgrade_list_item.view.*
-import pl.pjatk.s16604.proj1.R
-import pl.pjatk.s16604.proj1.STORAGE
+import pl.pjatk.s16604.proj1.*
 import pl.pjatk.s16604.proj1.models.ProjMetadata
 import pl.pjatk.s16604.proj1.models.Upgrade
 
@@ -53,7 +52,7 @@ class UpgradeViewHolder : RecyclerView.ViewHolder {
 
         }
 
-        private fun updateList(metadata: ProjMetadata) {
+        private fun saveData(metadata: ProjMetadata) {
             STORAGE.saveData(metadata)
         }
 
@@ -77,10 +76,6 @@ class UpgradeViewHolder : RecyclerView.ViewHolder {
         }
 
         override fun onBindViewHolder(recyclerViewHolder: UpgradeViewHolder, position: Int) {
-            return onBindShopViewHolder(recyclerViewHolder, position)
-        }
-
-        private fun onBindShopViewHolder(recyclerViewHolder: UpgradeViewHolder, position: Int) {
             recyclerViewHolder.bind(upgradeList[position])
 
             recyclerViewHolder.mView.setOnClickListener {
@@ -88,21 +83,21 @@ class UpgradeViewHolder : RecyclerView.ViewHolder {
                 val upgradeClicked = upgradeList[position]
 
                 if (upgradeClicked.cost < metadata.cookies) {
+                    animate(myContext,it)
                     upgradeClicked.addUpgrade()
                     metadata.cookies -= upgradeClicked.cost
                     metadata.perSecond += upgradeClicked.income
                     metadata.upgrades = upgradeList
-                    updateList(metadata)
+
+                    saveData(metadata)
                     loadData(myContext)
                     this.notifyDataSetChanged()
-
                 } else {
+                    animateShakeBlocked(myContext,it)
                     Toast.makeText(it.context, "Need moar cookies", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
-
-
         }
     }
 

@@ -2,6 +2,7 @@ package pl.pjatk.s16604.proj1
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import pl.pjatk.s16604.proj1.models.ProjMetadata
@@ -11,19 +12,19 @@ import java.lang.reflect.Type
 
 class StorageManager {
 
-    private var sharedPreferences: SharedPreferences? = null
-
+    private lateinit var sharedPreferences: SharedPreferences
     //initial default values in case of lack of SP
     var cookies = 0L
+    var perSecond = 0L
     var timer = MAX_TIME
     var upgrades = initUpgrades()
-    var perSecond = 0L
     var highscore = initHighscores()
 
 
     fun saveData(md: ProjMetadata) {
 
-        val editor = sharedPreferences!!.edit()
+//        sharedPreferences = md.sharedPreferences
+        val editor = sharedPreferences.edit()
         val gson = Gson()
         var jsonUpgrades = gson.toJson(md.upgrades)
         editor.putLong(COOKIES, md.cookies)
@@ -31,36 +32,40 @@ class StorageManager {
         editor.putLong(TIMER, md.timer)
         editor.putString(UPGRADES, jsonUpgrades)
         editor.apply()
+
+        cookies = md.cookies
+        timer = md.timer
+        upgrades = md.upgrades
+        perSecond = md.perSecond
+
     }
 
-    fun resetData(scoreList: MutableList<Result>) {
-        val editor = sharedPreferences!!.edit()
+    fun resetData() {
+        cookies = 0L
+        perSecond = 0L
+        timer = MAX_TIME
 
-        //reset game data
+        val editor = sharedPreferences.edit()
         val gson = Gson()
         var jsonUpgrades = gson.toJson(initUpgrades())
-        editor.putLong(COOKIES, 0L)
+        editor.putLong(COOKIES, cookies)
         editor.putString(UPGRADES, jsonUpgrades)
-        editor.putLong(TEMPO, 0L)
-        editor.putLong(TIMER, MAX_TIME)
+        editor.putLong(TEMPO, perSecond)
+        editor.putLong(TIMER, timer)
         editor.apply()
-        saveHighScore(scoreList)
-
     }
 
     fun loadData(context: Context): ProjMetadata {
         sharedPreferences = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
-
-        cookies = sharedPreferences!!.getLong(COOKIES, 0L)
-        timer = sharedPreferences!!.getLong(TIMER, MAX_TIME)
-        perSecond = sharedPreferences!!.getLong(TEMPO, 0L)
+        cookies = sharedPreferences.getLong(COOKIES, 0L)
+        timer = sharedPreferences.getLong(TIMER, MAX_TIME)
+        perSecond = sharedPreferences.getLong(TEMPO, 0L)
 
 
         val gson = Gson()
 
-        //upgrades
-        var jsonUpgrades = sharedPreferences!!.getString(UPGRADES, "")
+        var jsonUpgrades = sharedPreferences.getString(UPGRADES, "")
 
         upgrades =
             if (jsonUpgrades.equals("") || jsonUpgrades.equals("null")) {
@@ -70,11 +75,11 @@ class StorageManager {
                 gson.fromJson(jsonUpgrades, upgradeListType)
             }
 
-        return ProjMetadata(sharedPreferences!!, cookies, timer, perSecond, upgrades)
+        return ProjMetadata(sharedPreferences, cookies, timer, perSecond, upgrades)
     }
 
-    private fun saveHighScore(newScore: MutableList<Result>) {
-        val editor = sharedPreferences!!.edit()
+    fun saveHighScore(newScore: MutableList<Result>) {
+        val editor = sharedPreferences.edit()
         val gson = Gson()
         var jsonHighscore = gson.toJson(newScore)
         editor.putString(HIGHSCORE, jsonHighscore)
@@ -86,7 +91,7 @@ class StorageManager {
         val gson = Gson()
 
 
-        var jsonHighScores = sharedPreferences!!.getString(HIGHSCORE, "")
+        var jsonHighScores = sharedPreferences.getString(HIGHSCORE, "")
 
         highscore =
             if (jsonHighScores.equals("") || jsonHighScores.equals("null")) {
