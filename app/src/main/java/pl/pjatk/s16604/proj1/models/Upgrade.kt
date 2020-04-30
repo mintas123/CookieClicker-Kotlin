@@ -8,7 +8,7 @@ data class Upgrade (val icon: String, val upgradeName: String, var amount: Int, 
     }
 
     fun calcPoints(): Double {
-        return this.amount*this.multiplier*5
+        return this.amount*this.multiplier*10
     }
 
     fun calcIncome(): Long {

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.pjatk.s16604.proj1.*
@@ -77,53 +78,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun onFinishClick() {
         grannyBtn.setOnClickListener {
-            val intent = Intent(this, FinishActivity::class.java)
-            startActivity(intent)
+            saveData()
+            goToFinish()
         }
-    }
-
-
-    private fun timer() {
-        val countdownTimer = object : CountDownTimer(timer, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-                perSecond = calcIncome()
-                if (perSecond > 0) {
-                    cookieCounter.text = "Cookies: $cookies"
-                    tempo.text = "Tempo: $perSecond C/s"
-                    cookies += perSecond
-                }
-
-                var seconds = millisUntilFinished / 1000
-                timeLeft.text = "Time: ${timeFormatter(seconds)}"
-                timer = millisUntilFinished
-
-                val chance = Random.nextInt(0, 100)
-                if (chance < 1) {
-                    showMonster()
-                }
-            }
-
-            override fun onFinish() {
-                goToFinish()
-            }
-        }
-        countdownTimer.start()
-    }
-
-    private fun goToFinish() {
-        val intent = Intent(this, FinishActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun calcIncome(): Long {
-        var sum = 0L
-        upgrades.forEach {
-            if (it.amount > 0) {
-                sum += it.calcIncome()
-            }
-        }
-        return sum
     }
 
     private fun saveData() {
@@ -148,9 +105,41 @@ class MainActivity : AppCompatActivity() {
         timer = metadata.timer
 
         //set loaded data
-        tempo.text = "Tempo: ${calcIncome()} C/s"
+        tempo.text = "Tempo: ${calcIncomeSum()} C/s"
         cookieCounter.text = "Cookies: $cookies"
         timeLeft.text = "Time: ${timeFormatter(timer / 1000)}"
+    }
+
+
+    private fun timer() {
+        val countdownTimer = object : CountDownTimer(timer, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+                perSecond = calcIncomeSum()
+                if (perSecond > 0) {
+                    cookieCounter.text = "Cookies: $cookies"
+                    tempo.text = "Tempo: $perSecond C/s"
+                    cookies += perSecond
+                }
+
+                var seconds = millisUntilFinished / 1000
+                timeLeft.text = "Time: ${timeFormatter(seconds)}"
+                timer = millisUntilFinished
+
+                val chance = Random.nextInt(0, 100)
+                if (chance < 1) {
+                    showMonster()
+                }
+
+            }
+
+            override fun onFinish() {
+                goToFinish()
+            }
+        }
+
+        countdownTimer.start()
+
     }
 
     private fun showMonster() {
@@ -163,6 +152,7 @@ class MainActivity : AppCompatActivity() {
                     randomMonster.visibility = View.GONE
                     cookieClick.bringToFront()
                 }
+
                 override fun onTick(millisUntilFinished: Long) {
                 }
             }
@@ -183,6 +173,21 @@ class MainActivity : AppCompatActivity() {
             }
             saveData()
         }
+    }
+
+    private fun goToFinish() {
+        val intent = Intent(this, FinishActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun calcIncomeSum(): Long {
+        var sum = 0L
+        upgrades.forEach {
+            if (it.amount > 0) {
+                sum += it.calcIncome()
+            }
+        }
+        return sum
     }
 
 

@@ -47,8 +47,8 @@ class ScoreboardActivity : AppCompatActivity() {
     private fun loadData() {
         highscores = STORAGE.loadHighScore(this)
 
-        val topTen = highscores.stream().limit(TOP_LIMIT).collect(Collectors.toList())
-        resultAdapter.submitList(topTen)
+        val top = highscores.stream().limit(TOP_LIMIT).collect(Collectors.toList())
+        resultAdapter.submitList(top)
     }
 
 

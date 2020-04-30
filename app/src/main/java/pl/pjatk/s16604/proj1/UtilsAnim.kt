@@ -18,7 +18,7 @@ fun animateShake(context: Context, obj: View) {
     obj.startAnimation(animationShake)
 }
 
-fun animateShakeCookie(context: Context, obj: View) {
-    val animationShake = AnimationUtils.loadAnimation(context, R.anim.shake_cookie)
+fun animateShakeBlocked(context: Context, obj: View) {
+    val animationShake = AnimationUtils.loadAnimation(context, R.anim.shake_blocked)
     obj.startAnimation(animationShake)
 }

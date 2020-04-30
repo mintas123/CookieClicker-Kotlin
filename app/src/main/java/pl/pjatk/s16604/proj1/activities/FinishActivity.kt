@@ -3,12 +3,12 @@ package pl.pjatk.s16604.proj1.activities
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_finish.*
 import pl.pjatk.s16604.proj1.*
 import pl.pjatk.s16604.proj1.models.Result
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 class FinishActivity : AppCompatActivity() {
@@ -18,7 +18,7 @@ class FinishActivity : AppCompatActivity() {
     private var cookies = 0L
     private var upgrades = initUpgrades()
     private var highscores = initHighscores()
-    private var score = 0L
+    private var timer = 0L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +70,9 @@ class FinishActivity : AppCompatActivity() {
     }
 
     private fun saveData(hs: MutableList<Result>) {
-        STORAGE.resetData(hs)
+        STORAGE.saveHighScore(hs)
+        STORAGE.resetData()
+
     }
 
     private fun loadData() {
@@ -81,6 +83,7 @@ class FinishActivity : AppCompatActivity() {
         cookies = metadata.cookies
         upgrades = metadata.upgrades
         highscores = STORAGE.loadHighScore(this)
+        timer = metadata.timer
 
     }
 }
